@@ -4,13 +4,22 @@ import { useState, useEffect, useRef } from "react";
 
 interface SpeciesSuggestion {
   scientificName: string;
+  guid: string | null;
   commonName: string | null;
   rank: string | null;
+}
+
+export interface SpeciesSelection {
+  displayValue: string;
+  scientificName: string;
+  guid: string | null;
+  commonName: string | null;
 }
 
 interface SpeciesAutocompleteProps {
   value: string;
   onChange: (value: string) => void;
+  onSelect?: (selection: SpeciesSelection) => void;
   id?: string;
   name?: string;
   required?: boolean;
@@ -20,6 +29,7 @@ interface SpeciesAutocompleteProps {
 export default function SpeciesAutocomplete({
   value,
   onChange,
+  onSelect,
   id = "species",
   name = "species",
   required = false,
@@ -95,6 +105,12 @@ export default function SpeciesAutocomplete({
       : suggestion.scientificName;
     setQuery(displayValue);
     onChange(displayValue);
+    onSelect?.({
+      displayValue,
+      scientificName: suggestion.scientificName,
+      guid: suggestion.guid,
+      commonName: suggestion.commonName,
+    });
     setIsOpen(false);
     setSuggestions([]);
     inputRef.current?.blur();

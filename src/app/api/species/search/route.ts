@@ -29,11 +29,13 @@ export async function GET(request: NextRequest) {
     // Transform ALA response to a simpler format
     const suggestions = data.autoCompleteList?.map((item: {
       name: string;
+      guid?: string;
       commonName?: string;
       rankString?: string;
       matchedNames?: string[];
     }) => ({
       scientificName: item.name,
+      guid: item.guid || null,
       commonName: item.commonName || null,
       rank: item.rankString || null,
       matchedNames: item.matchedNames || [],

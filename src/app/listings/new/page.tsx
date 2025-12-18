@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth0 } from "@auth0/auth0-react";
 import type { PricingType, HealthStatus, PickupWindowInput, DayOfWeek } from "@/types";
-import SpeciesAutocomplete from "@/components/SpeciesAutocomplete";
+import SpeciesAutocomplete, { SpeciesSelection } from "@/components/SpeciesAutocomplete";
 import ImageUpload from "@/components/ImageUpload";
 
 const DAYS_OF_WEEK: DayOfWeek[] = [
@@ -24,10 +24,33 @@ export default function NewListingPage() {
   const [error, setError] = useState("");
   const [pricingType, setPricingType] = useState<PricingType>("fixed");
   const [species, setSpecies] = useState("");
+  const [speciesImage, setSpeciesImage] = useState<string | null>(null);
+  const [speciesImageLoading, setSpeciesImageLoading] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [pickupWindows, setPickupWindows] = useState<PickupWindowInput[]>([
     { type: "flexible", daysOfWeek: [], notes: "" },
   ]);
+
+  const handleSpeciesSelect = async (selection: SpeciesSelection) => {
+    setSpeciesImage(null);
+
+    if (!selection.guid) return;
+
+    setSpeciesImageLoading(true);
+    try {
+      const response = await fetch(`/api/species/${encodeURIComponent(selection.guid)}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.thumbnailUrl) {
+          setSpeciesImage(data.thumbnailUrl);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch species image:", error);
+    } finally {
+      setSpeciesImageLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -201,12 +224,32 @@ export default function NewListingPage() {
                 <label htmlFor="species" className="block text-sm font-medium text-gray-700 mb-1">
                   Species *
                 </label>
-                <SpeciesAutocomplete
-                  value={species}
-                  onChange={setSpecies}
-                  required
-                  placeholder="Start typing to search species..."
-                />
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <SpeciesAutocomplete
+                      value={species}
+                      onChange={setSpecies}
+                      onSelect={handleSpeciesSelect}
+                      required
+                      placeholder="Start typing to search species..."
+                    />
+                  </div>
+                  {(speciesImage || speciesImageLoading) && (
+                    <div className="w-16 h-16 rounded-lg overflow-hidden border border-gray-200 bg-gray-100 flex-shrink-0">
+                      {speciesImageLoading ? (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-green-600" />
+                        </div>
+                      ) : speciesImage ? (
+                        <img
+                          src={speciesImage}
+                          alt="Species"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : null}
+                    </div>
+                  )}
+                </div>
               </div>
               <div>
                 <label htmlFor="healthStatus" className="block text-sm font-medium text-gray-700 mb-1">
