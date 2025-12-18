@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth0 } from "@auth0/auth0-react";
 import type { PricingType, HealthStatus, PickupWindowInput, DayOfWeek } from "@/types";
+import SpeciesAutocomplete from "@/components/SpeciesAutocomplete";
+import ImageUpload from "@/components/ImageUpload";
 
 const DAYS_OF_WEEK: DayOfWeek[] = [
   "monday",
@@ -21,6 +23,8 @@ export default function NewListingPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pricingType, setPricingType] = useState<PricingType>("fixed");
+  const [species, setSpecies] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [pickupWindows, setPickupWindows] = useState<PickupWindowInput[]>([
     { type: "flexible", daysOfWeek: [], notes: "" },
   ]);
@@ -49,7 +53,7 @@ export default function NewListingPage() {
       userName: user.name,
       title: formData.get("title") as string,
       description: formData.get("description") as string,
-      species: formData.get("species") as string,
+      species,
       height: formData.get("height") ? parseFloat(formData.get("height") as string) : null,
       trunkDiameter: formData.get("trunkDiameter")
         ? parseFloat(formData.get("trunkDiameter") as string)
@@ -66,7 +70,7 @@ export default function NewListingPage() {
       pricingType,
       price: formData.get("price") ? parseFloat(formData.get("price") as string) : null,
       pickupWindows,
-      images: [],
+      images,
     };
 
     try {
@@ -161,7 +165,7 @@ export default function NewListingPage() {
                   name="title"
                   required
                   placeholder="e.g., Mature Jacaranda - 8m tall, healthy"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
               <div>
@@ -173,10 +177,18 @@ export default function NewListingPage() {
                   name="description"
                   rows={4}
                   placeholder="Describe the tree, its condition, why it's being sold..."
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
             </div>
+          </div>
+
+          {/* Photos */}
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Photos
+            </h2>
+            <ImageUpload images={images} onChange={setImages} maxImages={5} />
           </div>
 
           {/* Tree Details */}
@@ -189,13 +201,11 @@ export default function NewListingPage() {
                 <label htmlFor="species" className="block text-sm font-medium text-gray-700 mb-1">
                   Species *
                 </label>
-                <input
-                  type="text"
-                  id="species"
-                  name="species"
+                <SpeciesAutocomplete
+                  value={species}
+                  onChange={setSpecies}
                   required
-                  placeholder="e.g., Jacaranda mimosifolia"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  placeholder="Start typing to search species..."
                 />
               </div>
               <div>
@@ -205,7 +215,7 @@ export default function NewListingPage() {
                 <select
                   id="healthStatus"
                   name="healthStatus"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 >
                   <option value="">Select...</option>
                   <option value="excellent">Excellent</option>
@@ -225,7 +235,7 @@ export default function NewListingPage() {
                   step="0.1"
                   min="0"
                   placeholder="e.g., 8.5"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
               <div>
@@ -239,7 +249,7 @@ export default function NewListingPage() {
                   step="1"
                   min="0"
                   placeholder="e.g., 45"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
               <div>
@@ -253,7 +263,7 @@ export default function NewListingPage() {
                   step="0.1"
                   min="0"
                   placeholder="e.g., 6"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
               <div>
@@ -266,7 +276,7 @@ export default function NewListingPage() {
                   name="age"
                   min="0"
                   placeholder="e.g., 25"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
             </div>
@@ -286,7 +296,7 @@ export default function NewListingPage() {
                   name="address"
                   required
                   placeholder="123 Example Street"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
               <div>
@@ -299,7 +309,7 @@ export default function NewListingPage() {
                   name="suburb"
                   required
                   placeholder="e.g., Bondi"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
               <div>
@@ -310,7 +320,7 @@ export default function NewListingPage() {
                   id="state"
                   name="state"
                   required
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 >
                   <option value="">Select...</option>
                   <option value="NSW">NSW</option>
@@ -334,7 +344,7 @@ export default function NewListingPage() {
                   required
                   pattern="[0-9]{4}"
                   placeholder="e.g., 2026"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
             </div>
@@ -379,7 +389,7 @@ export default function NewListingPage() {
                   step="1"
                   min="0"
                   placeholder="e.g., 2500"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                 />
                 {pricingType === "auction" && (
                   <p className="text-sm text-gray-500 mt-1">
@@ -465,7 +475,7 @@ export default function NewListingPage() {
                           type="date"
                           value={pw.date || ""}
                           onChange={(e) => updatePickupWindow(index, { date: e.target.value })}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                       <div>
@@ -476,7 +486,7 @@ export default function NewListingPage() {
                           type="time"
                           value={pw.startTime || ""}
                           onChange={(e) => updatePickupWindow(index, { startTime: e.target.value })}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                       <div>
@@ -487,7 +497,7 @@ export default function NewListingPage() {
                           type="time"
                           value={pw.endTime || ""}
                           onChange={(e) => updatePickupWindow(index, { endTime: e.target.value })}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                     </div>
@@ -503,7 +513,7 @@ export default function NewListingPage() {
                           type="date"
                           value={pw.startDate || ""}
                           onChange={(e) => updatePickupWindow(index, { startDate: e.target.value })}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                       <div>
@@ -514,7 +524,7 @@ export default function NewListingPage() {
                           type="date"
                           value={pw.endDate || ""}
                           onChange={(e) => updatePickupWindow(index, { endDate: e.target.value })}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                     </div>
@@ -553,7 +563,7 @@ export default function NewListingPage() {
                       value={pw.notes || ""}
                       onChange={(e) => updatePickupWindow(index, { notes: e.target.value })}
                       placeholder="e.g., Call before arriving, gate code required"
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                     />
                   </div>
                 </div>

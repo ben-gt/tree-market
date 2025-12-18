@@ -224,7 +224,7 @@ export default function AdminSettingsPage() {
                     onChange={(e) =>
                       setSettings({ ...settings, heroTitle: e.target.value })
                     }
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white focus:border-green-500 focus:ring-green-500"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
                 <div>
@@ -241,7 +241,7 @@ export default function AdminSettingsPage() {
                       setSettings({ ...settings, heroDescription: e.target.value })
                     }
                     rows={3}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white focus:border-green-500 focus:ring-green-500"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
               </div>
@@ -266,7 +266,7 @@ export default function AdminSettingsPage() {
                     onChange={(e) =>
                       setSettings({ ...settings, ctaTitle: e.target.value })
                     }
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white focus:border-green-500 focus:ring-green-500"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
                 <div>
@@ -283,7 +283,7 @@ export default function AdminSettingsPage() {
                       setSettings({ ...settings, ctaDescription: e.target.value })
                     }
                     rows={3}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white focus:border-green-500 focus:ring-green-500"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
               </div>

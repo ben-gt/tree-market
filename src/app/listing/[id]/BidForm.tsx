@@ -129,7 +129,7 @@ export default function BidForm({
           step="1"
           required
           placeholder={`Min: $${minimumBid.toLocaleString()}`}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
         />
       </div>
 
@@ -146,7 +146,7 @@ export default function BidForm({
           onChange={(e) => setMessage(e.target.value)}
           rows={2}
           placeholder="Introduce yourself or ask a question..."
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-green-500 focus:ring-green-500"
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
         />
       </div>
 

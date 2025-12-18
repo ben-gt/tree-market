@@ -82,7 +82,7 @@ export default async function ListingsPage({
                 name="species"
                 defaultValue={params.species}
                 placeholder="e.g., Jacaranda"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:ring-green-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
               />
             </div>
             <div>
@@ -98,7 +98,7 @@ export default async function ListingsPage({
                 name="suburb"
                 defaultValue={params.suburb}
                 placeholder="e.g., Bondi"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:ring-green-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
               />
             </div>
             <div>
@@ -112,7 +112,7 @@ export default async function ListingsPage({
                 id="state"
                 name="state"
                 defaultValue={params.state}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:ring-green-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
               >
                 <option value="">All States</option>
                 <option value="NSW">NSW</option>
@@ -136,7 +136,7 @@ export default async function ListingsPage({
                 id="pricingType"
                 name="pricingType"
                 defaultValue={params.pricingType}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:ring-green-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500"
               >
                 <option value="">All Types</option>
                 <option value="fixed">Fixed Price</option>
