@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_AUTH0_DOMAIN=${NEXT_PUBLIC_AUTH0_DOMAIN}
+        - NEXT_PUBLIC_AUTH0_CLIENT_ID=${NEXT_PUBLIC_AUTH0_CLIENT_ID}
+    container_name: tree-market-app
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/tree-market
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:7
+    container_name: tree-market-mongo
+    ports:
+      - "27027:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: tree-market-tunnel
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
